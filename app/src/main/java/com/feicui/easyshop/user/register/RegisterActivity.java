@@ -1,7 +1,7 @@
-package com.feicui.easyshop.user;
+package com.feicui.easyshop.user.register;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -13,12 +13,16 @@ import android.widget.EditText;
 import com.feicui.easyshop.R;
 import com.feicui.easyshop.commons.ActivityUtils;
 import com.feicui.easyshop.commons.RegexUtils;
+import com.feicui.easyshop.components.AlertDialogFragment;
+import com.feicui.easyshop.components.ProgressDialogFragment;
+import com.feicui.easyshop.main.MainActivity;
+import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends MvpActivity<RegisterView, RegisterPresenter> implements RegisterView {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -35,6 +39,7 @@ public class RegisterActivity extends AppCompatActivity {
     private String password;
     private String pwd_again;
     private ActivityUtils activityUtils;
+    private ProgressDialogFragment dialogfragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +48,13 @@ public class RegisterActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
         activityUtils = new ActivityUtils(this);
-
         init();
+    }
+
+    @NonNull
+    @Override
+    public RegisterPresenter createPresenter() {
+        return new RegisterPresenter();
     }
 
     private void init() {
@@ -84,22 +94,66 @@ public class RegisterActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId()==android.R.id.home) finish();
+        if (item.getItemId() == android.R.id.home) finish();
         return super.onOptionsItemSelected(item);
     }
 
     @OnClick(R.id.btn_register)
     public void onClick() {
         if (RegexUtils.verifyUsername(username) != RegexUtils.VERIFY_SUCCESS) {
-            activityUtils.showToast(R.string.username_rules);
+            String msg = getString(R.string.username_rules);
+            showUserPasswordError(msg);
             return;
         } else if (RegexUtils.verifyPassword(password) != RegexUtils.VERIFY_SUCCESS) {
-            activityUtils.showToast(R.string.password_rules);
+            String msg = getString(R.string.password_rules);
+            showUserPasswordError(msg);
             return;
         } else if (!TextUtils.equals(password, pwd_again)) {
-            activityUtils.showToast(R.string.username_equal_pwd);
+            String msg = getString(R.string.username_equal_pwd);
+            showUserPasswordError(msg);
             return;
         }
-        activityUtils.showToast("执行注册的网络请求");
+
+        presenter.register(username, password);
+
+    }
+
+    @Override
+    public void showPrb() {
+
+        activityUtils.hideSoftKeyboard();
+        if (dialogfragment == null) {
+            dialogfragment = new ProgressDialogFragment();
+        }
+        if (dialogfragment.isVisible()) return;
+
+        dialogfragment.show(getSupportFragmentManager(), "Progress Dialog Fragment");
+    }
+
+    @Override
+    public void hidePrb() {
+        dialogfragment.dismiss();
+    }
+
+    @Override
+    public void showMsg(String msg) {
+        activityUtils.showToast(msg);
+    }
+
+    @Override
+    public void registerSuccess() {
+        activityUtils.startActivity(MainActivity.class);
+    }
+
+    @Override
+    public void registerFailed() {
+        etUsername.setText("");
+    }
+
+    @Override
+    public void showUserPasswordError(String msg) {
+        //展示弹出，提示错误信息
+        AlertDialogFragment fragment = AlertDialogFragment.newInstance(msg);
+        fragment.show(getSupportFragmentManager(),getString(R.string.username_pwd_rule));
     }
 }

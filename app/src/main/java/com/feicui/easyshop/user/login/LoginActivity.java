@@ -1,8 +1,9 @@
-package com.feicui.easyshop.user;
+package com.feicui.easyshop.user.login;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -15,6 +16,9 @@ import android.widget.TextView;
 
 import com.feicui.easyshop.R;
 import com.feicui.easyshop.commons.ActivityUtils;
+import com.feicui.easyshop.main.MainActivity;
+import com.feicui.easyshop.user.register.RegisterActivity;
+import com.hannesdorfmann.mosby.mvp.MvpActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,7 +28,7 @@ import butterknife.OnClick;
  * Created by Administrator on 2017/2/7 0007.
  */
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends MvpActivity<LoginView, LoginPresenter> implements LoginView {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -41,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private String password;
     private String username;
+    private DialogFragment dialogFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,6 +55,12 @@ public class LoginActivity extends AppCompatActivity {
         activityUtils = new ActivityUtils(this);
 
         init();
+    }
+
+    @NonNull
+    @Override
+    public LoginPresenter createPresenter() {
+        return new LoginPresenter();
     }
 
     private void init() {
@@ -98,11 +109,40 @@ public class LoginActivity extends AppCompatActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
-                activityUtils.showToast("执行登陆的网络请求");
+                presenter.login(username, password);
                 break;
             case R.id.tv_register:
                 activityUtils.startActivity(RegisterActivity.class);
                 break;
         }
+    }
+
+    @Override
+    public void showPrb() {
+        activityUtils.hideSoftKeyboard();
+        if (dialogFragment == null) dialogFragment = new DialogFragment();
+        if (dialogFragment.isVisible()) return;
+        dialogFragment.show(getSupportFragmentManager(), "Progress Dialog Fragment");
+    }
+
+    @Override
+    public void hidePrb() {
+        dialogFragment.dismiss();
+    }
+
+    @Override
+    public void showMsg(String msg) {
+        activityUtils.showToast(msg);
+    }
+
+    @Override
+    public void loginSuccess() {
+        activityUtils.startActivity(MainActivity.class);
+        finish();
+    }
+
+    @Override
+    public void loginFailed() {
+        etUsername.setText("");
     }
 }
