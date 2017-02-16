@@ -1,5 +1,6 @@
 package com.feicui.easyshop.main.shop;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import com.feicui.easyshop.R;
 import com.feicui.easyshop.commons.ActivityUtils;
+import com.feicui.easyshop.main.detail.GoodsDetailActivity;
 import com.feicui.easyshop.model.GoodsInfo;
 import com.hannesdorfmann.mosby.mvp.MvpFragment;
 
@@ -79,7 +81,9 @@ public class ShopFragment extends MvpFragment<ShopView, ShopPresenter> implement
         shopAdapter.setListener(new ShopAdapter.onItemClickListener() {
             @Override
             public void onItemClicked(GoodsInfo goodsInfo) {
-                // TODO: 2017/2/16 0016 点击跳转到商品详情页面
+                //  点击跳转到商品详情页面
+                Intent intent = GoodsDetailActivity.getStartIntent(getContext(), goodsInfo.getUuid(), 0);
+                startActivity(intent);
             }
         });
         recyclerView.setAdapter(shopAdapter);
@@ -161,7 +165,6 @@ public class ShopFragment extends MvpFragment<ShopView, ShopPresenter> implement
 
     @Override
     public void showLoadMoreEnd() {
-        activityUtils.showToast(getResources().getString(R.string.load_more_end));
         refreshLayout.refreshComplete();
     }
 
