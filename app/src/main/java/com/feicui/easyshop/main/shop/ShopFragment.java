@@ -67,6 +67,7 @@ public class ShopFragment extends MvpFragment<ShopView, ShopPresenter> implement
         return view;
     }
 
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
