@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 24
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.feicui.easyshop"
         minSdkVersion 17
-        targetSdkVersion 25
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -24,7 +24,7 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.1.1'
+    compile 'com.android.support:appcompat-v7:24.2.1'
     testCompile 'junit:junit:4.12'
     //Butterknife
     compile 'com.jakewharton:butterknife:8.5.1'
@@ -38,4 +38,13 @@ dependencies {
     //Gson
     compile 'com.google.code.gson:gson:2.8.0'
     compile 'com.hannesdorfmann.mosby:mvp:2.0.1'
+    //图片裁剪
+    compile 'org.hybridsquad.android.photocropper:library:2.1.0'
+    //ImageLoader（用于图片加载）
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+
+    //上拉加载，下拉刷新的库
+    compile 'in.srain.cube:ptr-load-more:1.0.2'
+    //recyclerview
+    compile 'jp.wasabeef:recyclerview-animators:2.2.3'
 }

@@ -87,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
                     return new UnLoginFragment();
                 case 3:
                     return new MeFragment();
-
             }
             return null;
         }
