@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         activityUtils = new ActivityUtils(this);
         init();
 
+
     }
 
     private void init() {
