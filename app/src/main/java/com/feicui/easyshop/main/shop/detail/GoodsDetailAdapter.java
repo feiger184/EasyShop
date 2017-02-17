@@ -1,4 +1,4 @@
-package com.feicui.easyshop.main.detail;
+package com.feicui.easyshop.main.shop.detail;
 
 import android.support.v4.view.PagerAdapter;
 import android.view.View;

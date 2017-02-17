@@ -1,5 +1,6 @@
 package com.feicui.easyshop.main.shop;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +14,7 @@ import android.widget.TextView;
 
 import com.feicui.easyshop.R;
 import com.feicui.easyshop.commons.ActivityUtils;
-import com.feicui.easyshop.main.detail.GoodsDetailActivity;
+import com.feicui.easyshop.main.shop.detail.GoodsDetailActivity;
 import com.feicui.easyshop.model.GoodsInfo;
 import com.hannesdorfmann.mosby.mvp.MvpFragment;
 

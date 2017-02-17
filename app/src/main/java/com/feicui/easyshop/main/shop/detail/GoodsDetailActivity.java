@@ -1,4 +1,4 @@
-package com.feicui.easyshop.main.detail;
+package com.feicui.easyshop.main.shop.detail;
 
 import android.content.Context;
 import android.content.Intent;
@@ -90,7 +90,10 @@ public class GoodsDetailActivity extends MvpActivity<GoodsDetailView, GoodsDetai
         adapter.setListener(new GoodsDetailAdapter.OnItemClickListener() {
             @Override
             public void onItemListener() {
-                // TODO: 2017/2/16 0016 图片详情
+                //  图片详情
+                Intent intent = GoodsDetailInfoActivity.getStartIntent(GoodsDetailActivity.this, list_uri);
+                startActivity(intent);
+
             }
         });
         viewPager.setAdapter(adapter);

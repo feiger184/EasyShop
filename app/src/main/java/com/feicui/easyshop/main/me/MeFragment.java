@@ -13,6 +13,7 @@ import com.feicui.easyshop.R;
 import com.feicui.easyshop.commons.ActivityUtils;
 import com.feicui.easyshop.components.AvatarLoadOptions;
 import com.feicui.easyshop.main.me.personInfo.PersonActivity;
+import com.feicui.easyshop.main.me.persongoods.PersonGoodsActivity;
 import com.feicui.easyshop.model.CachePreferences;
 import com.feicui.easyshop.network.EasyShopApi;
 import com.feicui.easyshop.user.login.LoginActivity;
@@ -80,6 +81,8 @@ public class MeFragment extends Fragment {
                 activityUtils.startActivity(PersonActivity.class);
                 break;
             case R.id.tv_person_goods:
+                activityUtils.startActivity(PersonGoodsActivity.class);
+
                 break;
             case R.id.tv_goods_upload:
                 break;

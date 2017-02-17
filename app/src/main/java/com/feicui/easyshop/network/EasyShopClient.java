@@ -145,4 +145,19 @@ public class EasyShopClient {
 
         return okHttpClient.newCall(request);
     }
+
+
+    public Call getPersonData(int pageNo, String type, String master) {
+        RequestBody requestBody = new FormBody.Builder()
+                .add("pageNo", String.valueOf(pageNo))
+                .add("type", type)
+                .add("master", master)
+                .build();
+        Request request = new Request.Builder()
+                .url(EasyShopApi.BASE_URL + EasyShopApi.GETGOODS)
+                .post(requestBody)
+                .build();
+
+        return okHttpClient.newCall(request);
+    }
 }

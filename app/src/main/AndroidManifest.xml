@@ -31,7 +31,11 @@
         </activity>
         <activity android:name=".main.me.personInfo.NickNameActivity">
         </activity>
-        <activity android:name=".main.detail.GoodsDetailActivity">
+        <activity android:name=".main.shop.detail.GoodsDetailActivity">
+        </activity>
+        <activity android:name=".main.me.persongoods.PersonGoodsActivity">
+        </activity>
+        <activity android:name=".main.shop.detail.GoodsDetailInfoActivity">
         </activity>
     </application>
 

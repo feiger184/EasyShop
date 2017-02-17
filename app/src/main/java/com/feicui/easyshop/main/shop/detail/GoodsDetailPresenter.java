@@ -1,4 +1,4 @@
-package com.feicui.easyshop.main.detail;
+package com.feicui.easyshop.main.shop.detail;
 
 import com.feicui.easyshop.model.GoodsDetail;
 import com.feicui.easyshop.model.GoodsDetailResult;
