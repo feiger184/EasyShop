@@ -1,10 +1,12 @@
 package com.feicui.easyshop.network;
 
 import com.feicui.easyshop.model.CachePreferences;
+import com.feicui.easyshop.model.GoodsUpLoad;
 import com.feicui.easyshop.model.User;
 import com.google.gson.Gson;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.FormBody;
@@ -117,7 +119,7 @@ public class EasyShopClient {
         return okHttpClient.newCall(request);
     }
 
-    //获取所有商品
+     /*获取所有商品*/
     public Call getGoods(int pageNo, String type) {
         RequestBody requestBody = new FormBody.Builder()
                 .add("pageNo", String.valueOf(pageNo))
@@ -133,9 +135,9 @@ public class EasyShopClient {
     }
 
     //获取商品详情
-    public Call getGoodsData(String goodsUuid){
+    public Call getGoodsData(String goodsUuid) {
         RequestBody requestBody = new FormBody.Builder()
-                .add("uuid",goodsUuid)
+                .add("uuid", goodsUuid)
                 .build();
 
         Request request = new Request.Builder()
@@ -146,7 +148,9 @@ public class EasyShopClient {
         return okHttpClient.newCall(request);
     }
 
-
+    /*
+    * 获取个人商品数据
+    * */
     public Call getPersonData(int pageNo, String type, String master) {
         RequestBody requestBody = new FormBody.Builder()
                 .add("pageNo", String.valueOf(pageNo))
@@ -160,4 +164,39 @@ public class EasyShopClient {
 
         return okHttpClient.newCall(request);
     }
+
+    //删除商品
+    public Call deleteGoods(String uuid){
+        RequestBody requestBody = new FormBody.Builder()
+                .add("uuid",uuid)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(EasyShopApi.BASE_URL + EasyShopApi.DELETE)
+                .post(requestBody)
+                .build();
+
+        return okHttpClient.newCall(request);
+    }
+
+    //商品上传
+    public Call upLoad(GoodsUpLoad goodsUpLoad, ArrayList<File> files){
+        MultipartBody.Builder builder = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("good",gson.toJson(goodsUpLoad));
+        //将所有图片文件添加进来
+        for (File file : files){
+            builder.addFormDataPart("image",file.getName(),
+                    RequestBody.create(MediaType.parse("image/png"),file));
+        }
+        RequestBody requestBody = builder.build();
+
+        Request request = new Request.Builder()
+                .url(EasyShopApi.BASE_URL + EasyShopApi.UPLOADGOODS)
+                .post(requestBody)
+                .build();
+
+        return okHttpClient.newCall(request);
+    }
+
 }
