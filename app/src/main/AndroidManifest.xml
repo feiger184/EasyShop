@@ -4,12 +4,12 @@
           package="com.feicui.easyshop">
 
     <!-- 网络权限 -->
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET"/>
     <!-- 相机权限 -->
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA"/>
     <!-- SD卡读写权限 -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name=".EasyShopApplication"
@@ -43,6 +43,8 @@
         <activity android:name=".main.shop.detail.GoodsDetailInfoActivity">
         </activity>
         <activity android:name=".main.me.goodsupload.GoodsUpLoadActivity">
+        </activity>
+        <activity android:name=".main.me.goodsupload.GoodsUpLoadImageShowActivity">
         </activity>
     </application>
 

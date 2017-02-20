@@ -102,7 +102,7 @@ public class GoodsUpLoadAdapter extends RecyclerView.Adapter {
             //当前数据
             ImageItem imageItem = list.get(position);
             //拿到当前Vh(因为已经判断是vh的实例，所以强转)
-            ItemSelectViewHolder item_select = (ItemSelectViewHolder) holder;
+            final ItemSelectViewHolder item_select = (ItemSelectViewHolder) holder;
             //拿到当前数据
             item_select.photo = imageItem;
             //判断模式（正常，可删除）
@@ -132,8 +132,10 @@ public class GoodsUpLoadAdapter extends RecyclerView.Adapter {
             item_select.ivPhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    // TODO: 2017/2/17 0017 tupian地方
+                     // 跳转到图片详情页
+                    if (mListener != null) {
+                        mListener.onPhotoClicked(item_select.photo, item_select.ivPhoto);
+                    }
                 }
             });
 
@@ -144,7 +146,10 @@ public class GoodsUpLoadAdapter extends RecyclerView.Adapter {
                     mode = MODE_MULTI_SELECT;
                     //更新
                     notifyDataSetChanged();
-                    // TODO: 2017/2/17 0017 执行长按的监听事件
+                    // 执行长按的监听事件
+                    if (mListener != null) {
+                        mListener.onLongClicked();
+                    }
                     return false;
                 }
 
@@ -162,7 +167,10 @@ public class GoodsUpLoadAdapter extends RecyclerView.Adapter {
             item_add.ib_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO: 2017/2/17 0017 点击图片
+                    // 点击图片的监听
+                    if (mListener != null) {
+                        mListener.onAddClicked();
+                    }
                 }
             });
         }
@@ -202,5 +210,23 @@ public class GoodsUpLoadAdapter extends RecyclerView.Adapter {
         }
     }
 
+    //  ############################   item点击事件接口回调  #############################
+    public interface OnItemClickListener {
+        //无图 点击添加图片
+        void onAddClicked();
 
+        //有图 点击跳转到图片展示页
+        void onPhotoClicked(ImageItem photo, ImageView imageView);
+
+        //有图  长按执行删除相关操作
+        void onLongClicked();
+
+    }
+
+    private OnItemClickListener mListener;
+
+    public void setListener(OnItemClickListener listener) {
+
+        mListener = listener;
+    }
 }
