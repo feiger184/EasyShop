@@ -1,12 +1,13 @@
 package com.feicui.easyshop.main.shop.detail;
 
+
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.feicui.easyshop.R;
 import com.feicui.easyshop.commons.ActivityUtils;
+import com.feicui.easyshop.commons.CurrentUser;
 import com.feicui.easyshop.components.AvatarLoadOptions;
 import com.feicui.easyshop.components.ProgressDialogFragment;
 import com.feicui.easyshop.model.CachePreferences;
@@ -23,6 +25,8 @@ import com.feicui.easyshop.model.GoodsDetail;
 import com.feicui.easyshop.model.User;
 import com.feicui.easyshop.network.EasyShopApi;
 import com.feicui.easyshop.user.login.LoginActivity;
+import com.feicuiedu.apphx.model.repository.DefaultLocalUsersRepo;
+import com.feicuiedu.apphx.presentation.chat.HxChatActivity;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -119,15 +123,22 @@ public class GoodsDetailActivity extends MvpActivity<GoodsDetailView, GoodsDetai
 
     @OnClick({R.id.btn_detail_message, R.id.tv_goods_delete})
     public void click(View view) {
-
+        //判断登录状态
         if (CachePreferences.getUser().getName() == null) {
             activityUtils.startActivity(LoginActivity.class);
             return;
         }
         switch (view.getId()) {
             case R.id.btn_detail_message:
-                // TODO: 2017/2/16 0016 跳转到环信页面
-                activityUtils.showToast("跳转到环信页面");
+                // 跳转到环信发消息页面
+                //根据环信ID判断商品归属，自己不能给自己发消息
+                if (goods_user.getHx_Id().equals(CachePreferences.getUser().getHx_Id())) {
+                    activityUtils.showToast("这个商品是自己发布的哦！");
+                    return;
+                }
+                //跳转到环信的消息页面
+                DefaultLocalUsersRepo.getInstance(this).save(CurrentUser.convert(goods_user));
+                startActivity(HxChatActivity.getStartIntent(GoodsDetailActivity.this, goods_user.getHx_Id()));
                 break;
             case R.id.tv_goods_delete:
                 //删除相关

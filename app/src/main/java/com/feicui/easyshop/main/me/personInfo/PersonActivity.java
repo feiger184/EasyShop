@@ -22,7 +22,9 @@ import com.feicui.easyshop.model.CachePreferences;
 import com.feicui.easyshop.model.ItemShow;
 import com.feicui.easyshop.model.User;
 import com.feicui.easyshop.network.EasyShopApi;
+import com.feicuiedu.apphx.model.HxUserManager;
 import com.hannesdorfmann.mosby.mvp.MvpActivity;
+import com.hyphenate.easeui.controller.EaseUI;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import org.hybridsquad.android.library.CropHandler;
@@ -121,7 +123,10 @@ public class PersonActivity extends MvpActivity<PersonView, PersonPersenter> imp
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
-                // TODO: 2017/2/14 0014 退出环信相关
+                // 退出环信相关
+                HxUserManager.getInstance().asyncLogout();
+                //登出关掉通知栏中的通知
+                EaseUI.getInstance().getNotifier().reset();
 
         }
     }
@@ -146,13 +151,11 @@ public class PersonActivity extends MvpActivity<PersonView, PersonPersenter> imp
     };
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) finish();
         return super.onOptionsItemSelected(item);
     }
-
 
 
     private PicWindow.Listener listener = new PicWindow.Listener() {

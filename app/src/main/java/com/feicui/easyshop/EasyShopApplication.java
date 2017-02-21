@@ -1,8 +1,10 @@
 package com.feicui.easyshop;
 
-import android.app.Application;
-
 import com.feicui.easyshop.model.CachePreferences;
+import com.feicuiedu.apphx.HxBaseApplication;
+import com.feicuiedu.apphx.HxModuleInitializer;
+import com.feicuiedu.apphx.model.repository.DefaultLocalInviteRepo;
+import com.feicuiedu.apphx.model.repository.DefaultLocalUsersRepo;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -11,7 +13,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
  * 初始化
  */
 
-public class EasyShopApplication extends Application {
+public class EasyShopApplication extends HxBaseApplication {
 
     @Override
     public void onCreate() {
@@ -33,5 +35,13 @@ public class EasyShopApplication extends Application {
                 .build();
 
         ImageLoader.getInstance().init(configuration);
+    }
+
+    @Override
+    protected void initHxModule(HxModuleInitializer initializer) {
+        initializer.setLocalInviteRepo(DefaultLocalInviteRepo.getInstance(this))
+                .setLocalUsersRepo(DefaultLocalUsersRepo.getInstance(this))
+                .setRemoteUsersRepo(new RemoteUserRepo())//创建远程用户仓库
+                .init();
     }
 }

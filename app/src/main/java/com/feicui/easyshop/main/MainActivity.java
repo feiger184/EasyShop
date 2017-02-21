@@ -12,6 +12,9 @@ import com.feicui.easyshop.R;
 import com.feicui.easyshop.commons.ActivityUtils;
 import com.feicui.easyshop.main.me.MeFragment;
 import com.feicui.easyshop.main.shop.ShopFragment;
+import com.feicui.easyshop.model.CachePreferences;
+import com.feicuiedu.apphx.presentation.contact.list.HxContactListFragment;
+import com.feicuiedu.apphx.presentation.conversation.HxConversationListFragment;
 
 import butterknife.BindView;
 import butterknife.BindViews;
@@ -45,10 +48,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
-        viewpager.setAdapter(unLoginAdapter);
-
+        //刚进来默认选择市场
         textviews[0].setSelected(true);
 
+        //判断用户是否登录，选择不同的适配器
+        if (CachePreferences.getUser().getName() == null) {
+            viewpager.setAdapter(unLoginAdapter);
+            textviews[0].setSelected(true);
+
+        } else {
+            viewpager.setAdapter(loginAdapter);
+            textviews[0].setSelected(true);
+        }
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -72,6 +83,34 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /*
+    * 登录时的ViewPager的适配器
+    * */
+    private FragmentStatePagerAdapter loginAdapter = new FragmentStatePagerAdapter(getSupportFragmentManager()) {
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                //市场
+                case 0:
+                    return new ShopFragment();
+                //消息
+                case 1:
+                    return new HxConversationListFragment();
+                //通讯录
+                case 2:
+                    return new HxContactListFragment();
+                //我的
+                case 3:
+                    return new MeFragment();
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return 4;
+        }
+    };
     /*
     * 未登录时的ViewPager适配器
     * */
@@ -109,10 +148,11 @@ public class MainActivity extends AppCompatActivity {
         //设置选择效果
         view.setSelected(true);
         //参数false代表瞬间切换，而不是平滑过渡
-        viewpager.setCurrentItem((Integer) view.getTag(),false);
+        viewpager.setCurrentItem((Integer) view.getTag(), false);
         //设置一下toolbar的title
         tv_title.setText(textviews[(Integer) view.getTag()].getText());
     }
+
     /*
     * 2秒内双击返回键 退出程序
     * */

@@ -42,7 +42,6 @@ dependencies {
     compile 'org.hybridsquad.android.photocropper:library:2.1.0'
     //ImageLoader（用于图片加载）
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-
     //上拉加载，下拉刷新的库
     compile 'in.srain.cube:ptr-load-more:1.0.2'
     //recyclerview
@@ -51,5 +50,5 @@ dependencies {
     compile 'me.relex:circleindicator:1.2.1@aar'
     //工具类
     compile 'org.apache.commons:commons-lang3:3.4'
-
+    compile project(':apphx')
 }

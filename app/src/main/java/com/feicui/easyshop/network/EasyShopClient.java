@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.Call;
 import okhttp3.FormBody;
@@ -119,7 +120,7 @@ public class EasyShopClient {
         return okHttpClient.newCall(request);
     }
 
-     /*获取所有商品*/
+    /*获取所有商品*/
     public Call getGoods(int pageNo, String type) {
         RequestBody requestBody = new FormBody.Builder()
                 .add("pageNo", String.valueOf(pageNo))
@@ -166,9 +167,9 @@ public class EasyShopClient {
     }
 
     //删除商品
-    public Call deleteGoods(String uuid){
+    public Call deleteGoods(String uuid) {
         RequestBody requestBody = new FormBody.Builder()
-                .add("uuid",uuid)
+                .add("uuid", uuid)
                 .build();
 
         Request request = new Request.Builder()
@@ -180,14 +181,14 @@ public class EasyShopClient {
     }
 
     //商品上传
-    public Call upLoad(GoodsUpLoad goodsUpLoad, ArrayList<File> files){
+    public Call upLoad(GoodsUpLoad goodsUpLoad, ArrayList<File> files) {
         MultipartBody.Builder builder = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("good",gson.toJson(goodsUpLoad));
+                .addFormDataPart("good", gson.toJson(goodsUpLoad));
         //将所有图片文件添加进来
-        for (File file : files){
-            builder.addFormDataPart("image",file.getName(),
-                    RequestBody.create(MediaType.parse("image/png"),file));
+        for (File file : files) {
+            builder.addFormDataPart("image", file.getName(),
+                    RequestBody.create(MediaType.parse("image/png"), file));
         }
         RequestBody requestBody = builder.build();
 
@@ -196,6 +197,34 @@ public class EasyShopClient {
                 .post(requestBody)
                 .build();
 
+        return okHttpClient.newCall(request);
+    }
+
+    //查找好友
+    public Call getSearchUser(String nickname) {
+        RequestBody requestBody = new FormBody.Builder()
+                .add("nickname", nickname)
+                .build();
+        Request request = new Request.Builder()
+                .url(EasyShopApi.BASE_URL + EasyShopApi.GET_USER)
+                .post(requestBody)
+                .build();
+        return okHttpClient.newCall(request);
+    }
+
+    //获取好友列表
+    public Call getUsers(List<String> ids) {
+
+        String names = ids.toString();
+        //清除list转换后的String中的空格
+        names = names.replace(" ", "");
+        RequestBody requestBody = new FormBody.Builder()
+                .add("name", names)
+                .build();
+        Request request = new Request.Builder()
+                .url(EasyShopApi.BASE_URL + EasyShopApi.GET_NAMES)
+                .post(requestBody)
+                .build();
         return okHttpClient.newCall(request);
     }
 
